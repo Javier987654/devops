@@ -1,0 +1,23 @@
+name: Ejecutar Pruebas Unitarias en Docker
+
+on: [push]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar código # Checkout code
+        uses: actions/checkout@v3
+
+      - name: Construir la imagen Docker # Build the Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          dockerfile: ./Dockerfile
+          push: false
+          load: true
+          tags: mi-imagen-unittest
+
+      - name: Ejecutar pruebas del contenedor # Run container tests
+        run: docker run mi-imagen-unittest
+        
